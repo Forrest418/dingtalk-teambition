@@ -2,6 +2,7 @@
 
 面向 OpenClaw 的钉钉 Teambition 技能，支持项目管理**读写**能力。
 
+
 ## 帮助与支持
 https://forreststudio.feishu.cn/drive/folder/Ma3Rf6gOclsxDQdpR7Aci8aCnbc
 
@@ -49,3 +50,14 @@ https://forreststudio.feishu.cn/drive/folder/Ma3Rf6gOclsxDQdpR7Aci8aCnbc
 - `把任务 <任务ID> 状态改为“进行中”`
 - `给任务 <任务ID> 添加评论：“已完成接口联调”`
 
+
+
+## 相关技能仓库
+
+- dingtalk-contacts: https://github.com/Forrest418/dingtalk-contacts
+- dingtalk-teambition: https://github.com/Forrest418/dingtalk-teambition
+- dingtalk-chatgroup: https://github.com/Forrest418/dingtalk-chatgroup
+- dingtalk-calendar: https://github.com/Forrest418/dingtalk-calendar
+- dingtalk-attendance: https://github.com/Forrest418/dingtalk-attendance
+- dingtalk-videomeeting: https://github.com/Forrest418/dingtalk-videomeeting
+- dingtalk-amap: https://github.com/Forrest418/dingtalk-amap
