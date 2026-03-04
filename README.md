@@ -1,48 +1,27 @@
 # dingtalk-teambition
 
-通用钉钉 Teambition 项目管理技能（Skill），用于通过 MCP 查询项目、任务、迭代、看板等信息。
+面向 OpenClaw 的钉钉 Teambition 技能，支持项目管理**读写**能力。
 
-## 功能
+## 帮助与支持
+https://forreststudio.feishu.cn/drive/folder/Ma3Rf6gOclsxDQdpR7Aci8aCnbc
 
-- 项目列表/详情查询
-- 任务检索与状态统计
-- 迭代（Sprint）与看板跟踪
-- 需求/缺陷/阻塞项盘点
+## 支持能力
 
-## 快速开始
+- 读取：项目列表/详情、任务详情、项目成员、任务状态、工时查询
+- 写入：创建项目、创建任务、更新任务状态/优先级/标题、分配执行人、添加评论、更新备注、填写工时
+- 建议：涉及写入时，先让助手复述将要修改的对象和字段，再确认执行
 
-1. 准备配置文件
+## 第一步：配置
 
-将你的 MCP 配置保存为仓库根目录 `mcporter.json`。
+把下面 JSON 保存为 `mcporter.json`，放到技能目录根路径。
 
-你可以先复制示例文件：
-
-```bash
-cp mcporter.example.json mcporter.json
-```
-
-2. 验证配置
-
-```bash
-./scripts/preflight.sh
-./scripts/discover_tools.sh
-```
-
-3. 开始调用
-
-```bash
-SERVER="$(./scripts/resolve_server.sh)"
-mcporter --config ./mcporter.json call "${SERVER}.<tool>" key:value --output json
-```
-
-## 配置文件示例
-
-文件路径：`./mcporter.json`
+如果你使用 OpenClaw 默认技能目录，路径通常是：
+`~/.openclaw/skills/dingtalk-teambition/mcporter.json`
 
 ```json
 {
   "mcpServers": {
-    "钉钉项目管理": {
+    "钉钉Teambition 项目管理": {
       "type": "streamable-http",
       "url": "https://mcp-gw.dingtalk.com/server/<serverId>?key=<key>"
     }
@@ -50,50 +29,23 @@ mcporter --config ./mcporter.json call "${SERVER}.<tool>" key:value --output jso
 }
 ```
 
-## 常用命令
+## 第二步：验证
 
-解析服务名：
+重启openclaw
 
-```bash
-./scripts/resolve_server.sh
-```
+## 第三步：开始使用
 
-查看可用工具：
+直接在 OpenClaw 对话中提需求即可。
 
-```bash
-./scripts/discover_tools.sh
-```
+读取示例：
 
-按 schema 调用工具（示例）：
+- `查一下我能看到几个 Teambition 项目`
+- `列出前 10 个项目名称`
+- `查询任务 <任务ID> 的详情和当前状态`
 
-```bash
-SERVER="$(./scripts/resolve_server.sh)"
-mcporter --config ./mcporter.json call "${SERVER}.<task-tool>" keyword:"支付" --output json
-```
+写入示例：
 
-## 排障
+- `在项目 <项目ID> 下创建任务：标题“支付联调”，负责人“张三”，截止“2026-03-10”`
+- `把任务 <任务ID> 状态改为“进行中”`
+- `给任务 <任务ID> 添加评论：“已完成接口联调”`
 
-- 提示缺少 `mcporter.json`：把配置文件放到仓库根目录。
-- 提示服务不可用：检查 URL 与 key 是否有效。
-- 查不到工具：先运行 `./scripts/discover_tools.sh`，确认服务返回了工具列表。
-
-## 安全说明
-
-- `mcporter.json` 可能包含敏感 key，请勿提交到公共仓库。
-- 仓库通过 `.gitignore` 忽略 `mcporter.json`。
-
-## 仓库结构
-
-```text
-.
-├── SKILL.md
-├── README.md
-├── mcporter.example.json
-├── references
-│   ├── configuration.md
-│   └── tool-discovery.md
-└── scripts
-    ├── resolve_server.sh
-    ├── preflight.sh
-    └── discover_tools.sh
-```

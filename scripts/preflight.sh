@@ -29,7 +29,7 @@ echo "[preflight] mcporter version: $(mcporter --version)"
 echo "[preflight] config path: ${CONFIG_PATH}"
 echo "[preflight] checking server: ${SERVER}"
 
-if ! mcporter --config "${CONFIG_PATH}" list "${SERVER}" --schema --json >"${TMP_JSON}" 2>"${TMP_ERR}"; then
+if ! "${SCRIPT_DIR}/mcp.sh" list "${SERVER}" --schema --json >"${TMP_JSON}" 2>"${TMP_ERR}"; then
   echo "[preflight] server check failed for '${SERVER}'" >&2
   cat "${TMP_ERR}" >&2 || true
   echo "[preflight] fix: update ${CONFIG_PATH} and retry" >&2

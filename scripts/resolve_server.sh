@@ -12,7 +12,7 @@ if [[ ! -f "${CONFIG_PATH}" ]]; then
 fi
 
 mcp() {
-  mcporter --config "${CONFIG_PATH}" "$@"
+  "${SCRIPT_DIR}/mcp.sh" "$@"
 }
 
 # Priority:
@@ -36,12 +36,18 @@ if [[ "${1:-}" != "" ]]; then
   exit 1
 fi
 
-for name in "钉钉项目管理" "dingtalk-teambition" "teambition"; do
+for name in "钉钉Teambition 项目管理" "钉钉项目管理" "dingtalk-teambition" "teambition"; do
   if is_server_ok "${name}"; then
     echo "${name}"
     exit 0
   fi
 done
+
+CONFIG_FIRST="$(jq -r '.mcpServers | keys[0] // empty' "${CONFIG_PATH}")"
+if [[ "${CONFIG_FIRST}" != "" ]]; then
+  echo "${CONFIG_FIRST}"
+  exit 0
+fi
 
 AUTO_NAME="$({
   mcp list --json 2>/dev/null \

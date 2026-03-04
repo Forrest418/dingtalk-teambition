@@ -10,16 +10,16 @@ List full schema:
 
 ```bash
 SERVER="$(scripts/resolve_server.sh)"
-mcporter --config ./mcporter.json list "$SERVER" --schema --json | jq '.'
+scripts/mcp.sh list "$SERVER" --schema --json | jq '.'
 ```
 
 Quick filter for project management tools:
 
 ```bash
 SERVER="$(scripts/resolve_server.sh)"
-mcporter --config ./mcporter.json list "$SERVER" --schema --json \
+scripts/mcp.sh list "$SERVER" --schema --json \
 | jq -r '.. | objects | select(has("name") or has("id")) | [.id // .name, .description // ""] | @tsv' \
-| rg -i "project|task|story|bug|issue|board|sprint|iteration|milestone|workitem|项目|任务|需求|缺陷|看板|迭代|里程碑|工时"
+| (rg -i "project|task|story|bug|issue|board|sprint|iteration|milestone|workitem|项目|任务|需求|缺陷|看板|迭代|里程碑|工时" 2>/dev/null || grep -Ei "project|task|story|bug|issue|board|sprint|iteration|milestone|workitem|项目|任务|需求|缺陷|看板|迭代|里程碑|工时")
 ```
 
 ## Mapping Heuristics

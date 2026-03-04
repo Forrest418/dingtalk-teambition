@@ -32,10 +32,20 @@ SERVER="$(scripts/resolve_server.sh)"
 
 - Run locally with `exec`/shell only.
 - Perform tool discovery before first project/task call.
-- Use canonical call format:
-  - `mcporter --config "<skill-root>/mcporter.json" call "${SERVER}.<tool>" key:value --output json`
+- Always call MCP through `scripts/mcp.sh` (never call raw `mcporter` directly), to avoid accidentally using workspace default config.
+- Use canonical call format (function syntax, compatible with server names containing spaces):
+  - `scripts/mcp.sh call "${SERVER}.<tool>(arg: \"value\")" --output json`
 - Prefer read-only calls. Ask user confirmation before create/update/delete operations.
 - If result is empty, report no-match and suggest broader keywords.
+
+## Session Cache Recovery (OpenClaw)
+
+If user reports `Teambition not configured` and the path points to `~/.openclaw/workspace/config/mcporter.json`, treat it as stale session cache first (not config-file content issue).
+
+Recovery order:
+
+1. Start a fresh session and retry.
+2. If still stale, clear DingTalk session keys in `~/.openclaw/agents/main/sessions/sessions.json` and restart gateway.
 
 ## Preflight
 
@@ -57,17 +67,15 @@ Then select actual tool names from schema because deployments may vary.
 
 ```bash
 SERVER="$(scripts/resolve_server.sh)"
-CONFIG_PATH="mcporter.json"
-mcporter --config "${CONFIG_PATH}" list "${SERVER}" --schema --json | jq '.tools[]?.name'
+scripts/mcp.sh call "${SERVER}.get_user_projects(pageSize: 5)" --output json
 ```
 
 ### 2) Query Tasks by Keyword/Person/Sprint
 
 ```bash
 SERVER="$(scripts/resolve_server.sh)"
-CONFIG_PATH="mcporter.json"
 # Replace selector and args according to discovered schema
-mcporter --config "${CONFIG_PATH}" call "${SERVER}.<task-search-tool>" keyword:"登录" --output json
+scripts/mcp.sh call "${SERVER}.<task-search-tool>(keyword: \"登录\")" --output json
 ```
 
 ### 3) Build Daily Snapshot (Read-Only)

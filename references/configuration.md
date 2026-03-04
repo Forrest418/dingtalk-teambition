@@ -38,3 +38,8 @@ Expected:
 
 - Preflight prints `ok`
 - Discovery prints project/task-related tools
+
+## OpenClaw Notes
+
+- If responses keep saying Teambition is not configured and show `~/.openclaw/workspace/config/mcporter.json`, check session cache before touching any `mcporter.json`.
+- First try a fresh session; if needed, clear DingTalk session keys in `~/.openclaw/agents/main/sessions/sessions.json` and restart gateway.
